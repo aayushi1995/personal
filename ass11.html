@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+function main()
+{
+  $(document).ready(function(){
+
+  var canvas = document.querySelector('canvas');
+  var c= canvas.getContext('2d');
+  c.beginPath();
+  var circle={
+    x:200,
+    y:100,
+    r:5,
+    vx:1,
+    vy:1,
+    
+  }
+  var globalID;
+// c.arc(circle.x, circle.y, circle.r, 0 ,2*Math.PI);
+// c.stroke();
+
+var canvas_w =canvas.width;
+var canvas_h = canvas.height;
+
+c.fillStyle = "#ffffff";
+c.fillRect(0, 0, canvas.width, canvas.height);
+recta=[{
+  x:200,
+  y:200,
+  width:100,
+  height:50,
+ color:"red",
+},
+{
+  x:100,
+  y:50,
+  width:50,
+  height:50,
+  color:"green",
+},
+{
+  x:300,
+  y:100,
+  width:50,
+  height:50,
+  color:"blue",
+}]
+ 
+var diff_x,diff_y;
+var flag=0;
+
+function draw()
+{
+  c.fillStyle = "#ffffff";
+  c.fillRect(0, 0, canvas.width, canvas.height); 
+  for(j=0;j<=2;j++)
+  {
+  c.fillStyle = recta[j].color;
+  c.fillRect(recta[j].x,recta[j].y,recta[j].width,recta[j].height);
+  }
+  
+
+for(var i=0; i <= 2 ; i++)
+    {
+          c.fillStyle = "black";
+          c.beginPath();
+          c.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, true);
+          c.fill();
+
+          if(((circle.x +circle.r )<= recta[i].x)&&((circle.y +circle.r) <= recta[i].y))
+          {
+            if((circle.y + circle.r )== (recta[i].y)&& ((circle.x +circle.r )==(recta[i].x)))
+            {
+              
+              circle.vx = -Math.abs(circle.vx);
+              circle.vy = -Math.abs(circle.vy);
+            }
+            else
+            {
+              next_x = (circle.x + circle.r)+ circle.vx ;
+              next_y = (circle.y + circle.r)+ circle.vy ;
+              if(((next_x) >= recta[i].x ) && ((next_y)>=recta[i].y) && ((next_x)<= (recta[i].x+recta[i].width)) && ((next_y)<=(recta[i].y + recta[i].height)))
+              {
+                  circle.y = circle.y + (recta[i].y - (circle.y+circle.r));
+                  circle.x = circle.x + (recta[i].x - (circle.x+circle.r));
+                  flag=1;
+              }
+            }
+
+          }
+          else if(((circle.y+circle.r)<= recta[i].y)&&((circle.x - circle.r)>= (recta[i].x + recta[i].width)))
+          {
+              if((circle.y  +circle.r)== (recta[i].y)&& ((circle.x - circle.r )==(recta[i].x + recta[i].width)))
+              {
+               circle.vx = Math.abs(circle.vx);
+               circle.vy = -Math.abs(circle.vy);
+              }
+              else
+              {
+                  next_x = (circle.x - circle.r)+ circle.vx ;
+                  next_y = (circle.y + circle.r)+ circle.vy ;
+
+                  if(((next_x) >= recta[i].x ) && ((next_y)>=recta[i].y) && ((next_x)<= (recta[i].x+recta[i].width)) && ((next_y)<=(recta[i].y + recta[i].height)))
+                  {
+                      circle.y = circle.y + (recta[i].y - (circle.y+circle.r));
+                      circle.x = circle.x - ((circle.x - circle.r) - (recta[i].x + recta[i].width));
+                      flag=1;
+                  }
+              }
+          }
+          
+          else if(((circle.x + circle.r )>=(recta[i].x +recta.width))&&((circle.y + circle.r)>=(recta[i].y +recta[i].height)))
+          {
+              if((circle.y + circle.r )== (recta[i].y + recta[i].height)&& ((circle.x - circle.r )==(recta[i].x +recta[i].width)))
+              {
+               
+               circle.vx = -Math.abs(circle.vx);
+               circle.vy = -Math.abs(circle.vy);
+              }
+              else
+              {
+                  next_x = (circle.x - circle.r)+ circle.vx ;
+                  next_y = (circle.y - circle.r)+ circle.vy ;
+
+                  if(((next_x) >= recta[i].x ) && ((next_y)>=recta[i].y) && ((next_x)<= (recta[i].x+recta[i].width)) && ((next_y)<=(recta[i].y + recta[i].height)))
+                  {
+                      circle.y = circle.y - ((circle.y - circle.r) - (recta[i].y + recta[i].height));
+                      circle.x = circle.x - ((circle.x - circle.r) - (recta[i].x + recta[i].width));
+                      flag=1;
+                  }
+              }
+          }
+          else if((circle.y - circle.r)>=(recta[i].y + recta[i].height)&& ((circle.x +circle.r)<=(recta[i].x)))
+          {
+             if((circle.y - circle.r)== (recta[i].y + recta[i].height)&& ((circle.x +circle.r)==(recta[i].x)))
+              {
+               circle.vx = -Math.abs(circle.vx);
+               circle.vy = Math.abs(circle.vy);
+              }
+              else
+              {
+                  next_x = (circle.x + circle.r)+ circle.vx ;
+                  next_y = (circle.y - circle.r)+ circle.vy ;
+
+                  if(((next_x) >= recta[i].x ) && ((next_y)>=recta[i].y) && ((next_x)<= (recta[i].x+recta[i].width)) && ((next_y)<=(recta[i].y + recta[i].height)))
+                  {
+                      circle.y = circle.y - ((circle.y - circle.r) - (recta[i].y + recta[i].height));
+                      circle.x = circle.x + ((recta[i].x + recta[i].width) - (circle.x - circle.r));
+                      flag=1;
+                  }
+              }
+              
+          }
+         
+         
+          else
+          {
+                if(((circle.x + circle.r)  >= recta[i].x )&&( (circle.x -circle.r) <= (recta[i].x + recta[i].width) ))
+                {
+                    if((circle.y + circle.r)  == recta[i].y)
+                      {
+                          circle.vy = -Math.abs(circle.vy);
+                      }
+                    else if((circle.y +circle.r ) < recta[i].y)
+                    {
+                      next_y  = (circle.y+circle.r) + circle.vy;
+                      if(next_y >= recta[i].y)
+                      {
+                        diff_y = recta[i].y - (circle.y+circle.r);
+                        circle.y = (circle.y + diff_y); 
+                        flag=1;
+                       } 
+                    }
+                    if((circle.y -circle.r) == (recta[i].y + recta[i].height))
+                    {
+                      circle.vy = Math.abs(circle.vy);
+                    }  
+                    else if((circle.y -circle.r) > (recta[i].y + recta[i].height))
+                    {
+
+                      next_y  = (circle.y -circle.r) + circle.vy;
+                      if(next_y <= (recta[i].y + recta[i].height))
+                      {
+                        diff_y = (recta[i].y + recta[i].height)-(circle.y-circle.r);
+                        circle.y = (circle.y + diff_y); 
+                        flag=1;
+                      } 
+                    }
+                }
+
+              if(((circle.y + circle.r) >= recta[i].y )&&((circle.y-circle.r) <= (recta[i].y + recta[i].height)))
+              {
+                if((circle.x + circle.r) == recta[i].x )
+                  {
+                     circle.vx = -Math.abs(circle.vx);
+                  }
+                else if((circle.x +circle.r) < recta[i].x )
+                {
+                  next_x = (circle.x+circle.r) + circle.vx;
+                  if(next_x >= recta[i].x)
+                  {
+                      diff_x = recta[i].x-(circle.x+circle.r);
+                      circle.x = (circle.x + diff_x); 
+                      flag=1;
+                    
+                  }
+                }
+                 if((circle.x-circle.r) ==(recta[i].x + recta[i].width ))
+                 {
+                   circle.vx = Math.abs(circle.vx);
+                }
+                else if((circle.x- circle.r) >= (recta[i].x +recta[i].width))
+                {
+                  next_x = (circle.x - circle.r) + circle.vx;
+                  if(next_x <= (recta[i].x +recta[i].width))
+                  {
+                    diff_x = (recta[i].x + recta[i].width)-(circle.x -circle.r) ;
+                    circle.x = (circle.x + diff_x);
+                    flag=1;
+                     
+                  }
+                }
+              }
+          }
+
+
+
+      /***CANVAS******/
+          if ( (circle.x + circle.r)  >= canvas.width) {
+            circle.vx = -Math.abs(circle.vx);
+          }
+          else if( (circle.x - circle.r)   <= 0 ){
+                circle.vx = Math.abs(circle.vx);
+          } 
+
+          if ((circle.y + circle.r)  >= 0 + canvas.height ) {
+              circle.vy = -Math.abs(circle.vy);
+          }
+          else if( (circle.y - circle.r)  <= 0){
+                circle.vy = Math.abs(circle.vy);
+          }
+          
+            if(flag!=1)
+            {
+              circle.x = circle.x + circle.vx;
+              circle.y = circle.y + circle.vy;
+
+            }
+     }
+  
+  globalID = requestAnimationFrame(draw);
+    flag=0;
+}
+
+globalID = requestAnimationFrame(draw);
+});
+
+}
+
+</script>
+
+<style type="text/css">
+  canvas
+  {
+    
+    border: 1px solid black;
+  }
+
+</style>
+<body>
+<canvas width="600" height="300"></canvas>
+<!-- <div style="display: inline-block;">
+  <label>Enter the speed of the ball u want:</label>
+  <input type="textbox" id="speed_limit" value="7">
+  <input type="textbox" id="user_x" value="10">
+  <input type="textbox" id="user_y" value="10">
+</div> -->
+<button onclick="main()"> Apply</button>
+</body>
+</html>
