@@ -9,70 +9,85 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
-function main()
-{
-  $(document).ready(function()
+    
+
+   // var c_vx= 5;document.getElementById("speed_x").value;
+var speed_vx = 5;//parseInt(c_vx);
+    //var c_vy= document.getElementById("speed_y").value;
+var speed_vy = 5;//parseInt(c_vy);
+
+$(document).ready(function()
   {
-    var canvas = document.querySelector('canvas');
+	var canvas = document.querySelector('canvas');
     var c= canvas.getContext('2d');
     c.beginPath();
     var circle={
       x:10,
       y:10,
       r:5,
-      vx:5,
-      vy:5,
+      vx:speed_vx,
+      vy:speed_vy,
       } 
-      var globalID;
-      // c.arc(circle.x, circle.y, circle.r, 0 ,2*Math.PI);
-      // c.stroke();
-
-      var canvas_w =canvas.width;
-      var canvas_h = canvas.height;
-
-      c.fillStyle = "#ffffff";
-      c.fillRect(0, 0, canvas.width, canvas.height);
-      recta=[{
+	document.getElementById("view_x").innerHTML = circle.vx;
+	document.getElementById("view_y").innerHTML = circle.vy;
+    var globalID;
+    var canvas_w =canvas.width;
+    var canvas_h = canvas.height;
+	c.fillStyle = "#ffffff";
+    c.fillRect(0, 0, canvas.width, canvas.height);
+    recta=[{
         x:200,
         y:200,
         width:100,
         height:50,
        color:"red",
-      },
-      {
+    },
+    {
         x:100,
         y:50,
         width:50,
         height:50,
         color:"green",
-      },
-      {
+    },
+    {
         x:300,
         y:100,
         width:50,
         height:50,
         color:"blue",
-      },
-      {
+    },
+    {
         x:400,
         y:100,
         width:50,
         height:50,
         color:"pink",
-      },
-      {
+    },
+    {
         x:400,
         y:200,
         width:50,
         height:50,
         color:"grey",
-      }]
-       
-      var diff_x,diff_y;
-      var flag=0;
+    }]
+    var diff_x,diff_y;
+    var flag=0;
+    jQuery('#speed_x').change(function(){
+    speed_vx = parseInt(jQuery(this).val());
+    circle.vx = speed_vx;
+	document.getElementById("view_x").innerHTML = circle.vx;
+	});
 
-      function draw()
-      {
+    jQuery('#speed_y').change(function(){
+	speed_vy = parseInt(jQuery(this).val());
+	circle.vy =speed_vy;
+	document.getElementById("view_y").innerHTML = circle.vy;
+	});
+
+	function draw()
+    {
+		// circle.vx = speed_vx;
+      	// circle.vy = speed_vy;
         c.fillStyle = "#ffffff";
         c.fillRect(0, 0, canvas.width, canvas.height); 
         for(j=0;j<=4;j++)
@@ -82,23 +97,21 @@ function main()
         }
         
 
-          for(var i=0; i <= 4 ; i++)
-              {
-                    c.fillStyle = "black";
-                    c.beginPath();
-                    c.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, true);
-                    c.fill();
-
-                    if(((circle.x  )<= recta[i].x)&&((circle.y ) <= recta[i].y))
+        for(var i=0; i <= 4 ; i++)
+            {
+                c.fillStyle = "black";
+                c.beginPath();
+                c.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, true);
+                c.fill();
+				if(((circle.x  )<= recta[i].x)&&((circle.y ) <= recta[i].y))
+                {
+                    if((circle.y )== (recta[i].y)&& ((circle.x  )==(recta[i].x)))
                     {
-                      if((circle.y )== (recta[i].y)&& ((circle.x  )==(recta[i].x)))
-                      {
-                        
-                        circle.vx = -Math.floor((Math.random() * 1) + 4);;
-                        circle.vy = -Math.floor((Math.random() * 1) + 3);
-                      }
-                      else
-                      {
+                    circle.vx = -Math.floor((Math.random() * 1) + 4);;
+                    circle.vy = -Math.floor((Math.random() * 1) + 3);
+                    }
+                    else
+                    {
                         next_x = (circle.x)+ circle.vx ;
                         next_y = (circle.y)+ circle.vy ;
                         if(((next_x) >= recta[i].x ) && ((next_y)>=recta[i].y) && ((next_x)<= (recta[i].x+recta[i].width)) && ((next_y)<=(recta[i].y + recta[i].height)))
@@ -107,11 +120,11 @@ function main()
                             circle.x = circle.x + (recta[i].x - (circle.x));
                             flag=1;
                         }
-                      }
+                     }
 
-                    }
-                    if(((circle.y)<= recta[i].y)&&((circle.x)>= (recta[i].x + recta[i].width)))
-                    {
+                }
+                if(((circle.y)<= recta[i].y)&&((circle.x)>= (recta[i].x + recta[i].width)))
+                {
                         if((circle.y  )== (recta[i].y)&& ((circle.x )==(recta[i].x + recta[i].width)))
                         {
                          circle.vx = Math.floor((Math.random() * 1) + 4);
@@ -129,10 +142,10 @@ function main()
                                 flag=1;
                             }
                         }
-                    }
+                }
                     
-                    if(((circle.x )>=(recta[i].x +recta.width))&&((circle.y)>=(recta[i].y +recta[i].height)))
-                    {
+                if(((circle.x )>=(recta[i].x +recta.width))&&((circle.y)>=(recta[i].y +recta[i].height)))
+                {
                         if((circle.y )== (recta[i].y + recta[i].height)&& ((circle.x )==(recta[i].x +recta[i].width)))
                         {
                          
@@ -151,9 +164,9 @@ function main()
                                 flag=1;
                             }
                         }
-                    }
-                    if((circle.y)>=(recta[i].y + recta[i].height)&& ((circle.x )<=(recta[i].x)))
-                    {
+                }
+                if((circle.y)>=(recta[i].y + recta[i].height)&& ((circle.x )<=(recta[i].x)))
+                {
                        if((circle.y)== (recta[i].y + recta[i].height)&& ((circle.x )==(recta[i].x)))
                         {
                          circle.vx = -Math.floor((Math.random() * 1) + 4);
@@ -172,14 +185,13 @@ function main()
                             }
                         }
                         
-                    }
-                   
-                      if(((circle.x)  >= recta[i].x )&&( (circle.x ) <= (recta[i].x + recta[i].width) ))
-                      {
-                        if((circle.y)  == recta[i].y)
-                          {
+                }
+                if(((circle.x)  >= recta[i].x )&&( (circle.x ) <= (recta[i].x + recta[i].width) ))
+                {
+                    if((circle.y)  == recta[i].y)
+                        {
                              circle.vy = -Math.abs(circle.vy);
-                          }
+                        }
                         else if((circle.y  ) < recta[i].y)
                         {
                           next_y  = (circle.y) + circle.vy;
@@ -204,9 +216,9 @@ function main()
                             flag=1;
                           } 
                         }
-                      }
-                      if(((circle.y) >= recta[i].y )&&((circle.y) <= (recta[i].y + recta[i].height)))
-                      {
+                    }
+					if(((circle.y) >= recta[i].y )&&((circle.y) <= (recta[i].y + recta[i].height)))
+                    {
                         if((circle.x) == recta[i].x )
                         {
                           circle.vx = -Math.abs(circle.vx);
@@ -237,7 +249,7 @@ function main()
                                
                             }
                           }
-                        }
+                    }
                     
 
 
@@ -269,9 +281,12 @@ function main()
       }
 
 globalID = requestAnimationFrame(draw);
+
+
+
 });
 
-}
+
 
 </script>
 
@@ -280,6 +295,26 @@ globalID = requestAnimationFrame(draw);
   {
     
     border: 1px solid black;
+  }
+  #speed_x
+  {
+  	width:20%;
+  	display: inline-block;
+  }
+  #speed_y
+  {
+  	width:20%;
+  	display: inline-block;
+  }
+  #view_x
+  {
+  	display: inline-block;
+  	font-size: 20px;
+  }
+  #view_y
+  {
+  	display: inline-block;
+  	font-size: 20px;
   }
 
 </style>
@@ -291,6 +326,11 @@ globalID = requestAnimationFrame(draw);
   <input type="textbox" id="user_x" value="10">
   <input type="textbox" id="user_y" value="10">
 </div> -->
-<button onclick="main()"> Apply</button>
+
+speed_vx: <p id="view_x"></p>
+<input type="range" id="speed_x" value="5" min="1" max="10">
+speed vy: <p id="view_y"></p>
+<input type="range" id="speed_y" value="5" min="1" max="10">
+
 </body>
 </html>
